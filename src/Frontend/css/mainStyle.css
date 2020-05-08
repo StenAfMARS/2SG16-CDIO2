@@ -38,6 +38,7 @@ body main{
     overflow: no-content;
     width: 100%;
 }
+/*styling for forms*/
 main form{
     margin: 0 auto;
     position: relative;
@@ -54,7 +55,6 @@ form h2{
 form label{
     float: left;
     font-size: 40px;
-
     position:relative;
     width: 90%;
 }
@@ -72,6 +72,14 @@ form button{
     padding: 20px;
     position: relative;
     width: 90%;
+}
+/*stylling tables*/
+main table{
+    position: relative;
+    width: 80%;
+}
+main table tr{
+    text-align: center;
 }
 body footer{
     display: block;
