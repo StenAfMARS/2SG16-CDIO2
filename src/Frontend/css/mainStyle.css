@@ -65,13 +65,18 @@ form input{
     position: relative;
     width: 90%;
 }
-form button{
+form a{
     float: left;
-    font-size: 30px;
     margin: 20px 0;
     padding: 20px;
     position: relative;
     width: 90%;
+}
+form button{
+    float: left;
+    font-size: 30px;
+    position: relative;
+    width: 100%;
 }
 /*stylling tables*/
 main table{
