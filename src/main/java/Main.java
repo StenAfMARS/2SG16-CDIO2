@@ -1,5 +1,3 @@
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
 import java.util.Scanner;
 
 public class Main {
@@ -7,4 +5,5 @@ public class Main {
         Scanner in = new Scanner(System.in, "CP850");
         System.out.println(in.nextLine());
     }
+
 }
