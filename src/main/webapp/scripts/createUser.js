@@ -1,6 +1,6 @@
-function createIngredient() {
+function createUser() {
     event.preventDefault();
-    var data = $('#ingredientform').serializeJSON();
+    var data = $('#userForm').serializeJSON();
     $.ajax({
         url: 'rest/User',
         method: 'POST',

@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    loadUsers();
+    loadUser();
 });
 function deleteUser(id) {
     if (!id && id != 0) {
@@ -15,7 +15,7 @@ function deleteUser(id) {
         },
         error: function (jqXHR, textStatus, errorThrown) {
             alert(jqXHR.responseText);
-            loadIngredients();
+            loadUsers();
 
         }
     });
@@ -38,7 +38,7 @@ function generateUserTable(user) {
         '<td>' + CPR.name + '</td>' +
         '<td>' + Password.password + '</td>' +
         '<td>' + Roles.role + '</td>' +
-        '<td>' + update.update + '</td>' +
+        '<td onclick="updateUser(' + User.id + ')">' + update.update + '</td>' +
 
         '<td onclick="deleteUser(' + User.id + ')"><button>slet bruger</button></td></tr> '
 }
