@@ -27,18 +27,20 @@ public class Appconfig extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String[] uri = req.getPathInfo().split("/");
+        String uri = req.getPathInfo();
         PrintWriter writer = resp.getWriter();
+        System.out.println(uri);
 
-        if (uri.length == 2)
-        switch (uri[1]){
-            case "login":
+        switch (uri){
+            case "/login":
                 writer.println(
                     LoginManager.auth(
                         req.getParameter("username"),
                         req.getParameter("password"))
                 );
                 break;
+            default:
+                writer.println("404 API not found");
         }
 
         writer.close();
