@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    loadUser();
+    loadUsers();
 });
 function deleteUser(id) {
     if (!id && id != 0) {
@@ -7,11 +7,11 @@ function deleteUser(id) {
     }
     event.preventDefault();
     $.ajax({
-        url: 'rest/ingredient/' + id,
+        url: 'rest/user/' + id,
         method: 'DELETE',
         success: function (data) {
             alert(JSON.stringify(data));
-            loadIngredients();
+            loadUsers();
         },
         error: function (jqXHR, textStatus, errorThrown) {
             alert(jqXHR.responseText);
@@ -21,7 +21,7 @@ function deleteUser(id) {
     });
 }
 
-function loadUser() {
+function loadUsers() {
     $.get('rest/Users', function (data, textStatus, req) {
         $("#userTable").empty();
         $.each(data, function (i, elt) {
@@ -40,5 +40,5 @@ function generateUserTable(user) {
         '<td>' + Roles.role + '</td>' +
         '<td>' + update.update + '</td>' +
 
-        '<td onclick="deleteUser(' + User.id + ')"><button>slet ingrediens</button></td></tr> '
+        '<td onclick="deleteUser(' + User.id + ')"><button>slet bruger</button></td></tr> '
 }

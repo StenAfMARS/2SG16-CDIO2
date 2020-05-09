@@ -5,7 +5,7 @@ function createIngredient() {
         url: 'rest/User',
         method: 'POST',
 
-        contentType: "application/json", // det visender er json
+        contentType: "application/json", // det vi sender er json
         data: data,
         success: function (data) {
             alert(JSON.stringify(data));
