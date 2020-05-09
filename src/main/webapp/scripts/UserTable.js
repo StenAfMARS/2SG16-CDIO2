@@ -7,21 +7,21 @@ function deleteUser(id) {
     }
     event.preventDefault();
     $.ajax({
-        url: 'rest/ingredient/' + id,
+        url: 'rest/Users/' + id,
         method: 'DELETE',
         success: function (data) {
             alert(JSON.stringify(data));
-            loadIngredients();
+            loadUsers();
         },
         error: function (jqXHR, textStatus, errorThrown) {
             alert(jqXHR.responseText);
-            loadIngredients();
+            loadUsers();
 
         }
     });
 }
 
-function loadUser() {
+function loadUsers() {
     $.get('rest/Users', function (data, textStatus, req) {
         $("#userTable").empty();
         $.each(data, function (i, elt) {
@@ -38,7 +38,7 @@ function generateUserTable(user) {
         '<td>' + CPR.name + '</td>' +
         '<td>' + Password.password + '</td>' +
         '<td>' + Roles.role + '</td>' +
-        '<td>' + update.update + '</td>' +
+        '<td onclick="updateUser(' + User.id + ')">' + update.update + '</td>' +
 
-        '<td onclick="deleteUser(' + User.id + ')"><button>slet ingrediens</button></td></tr> '
+        '<td onclick="deleteUser(' + User.id + ')"><button>slet bruger</button></td></tr> '
 }
