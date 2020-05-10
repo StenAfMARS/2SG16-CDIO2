@@ -17,9 +17,14 @@
         <input name="password" type="text">
         <label>Roles</label>
         <input name="roles" type="text">
-        <button onclick="updateUser(document.userForm.userID.value, document.userForm.userName.value, document.userForm.password.value, document.userForm.ini.value, document.userForm.cpr.value, document.userForm.roles.value)">Update User</button>
-        <button onclick="createUser()">Create User</button>
-
+        <button onclick="updateUser(document.userForm.userID.value, document.userForm.userName.value, document.userForm.password.value, document.userForm.ini.value, document.userForm.cpr.value, document.userForm.roles.value.split(','))">Update User</button>
+        <button onclick="createUser({
+        userID:document.userForm.userID.value,
+        userName:document.userForm.userName.value,
+        password:document.userForm.password.value,
+        ini:document.userForm.ini.value,
+        cpr:document.userForm.cpr.value,
+        roles:document.userForm.roles.value.split(',')})">Create User</button>
     </form>
 </main>
 <script>
