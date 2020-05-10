@@ -17,9 +17,8 @@
         <input name="password" type="text">
         <label>Roles</label>
         <input name="roles" type="text">
-        <button onclick="updateUser(document.userForm.userID.value, document.userForm.userName.value, document.userForm.password.value, document.userForm.ini.value, document.userForm.cpr.value, document.userForm.roles.value)">Update User</button>
+        <button onclick="updateUser(document.userForm.userID.value, document.userForm.userName.value, document.userForm.password.value, document.userForm.ini.value, document.userForm.cpr.value, document.userForm.roles.value.split(','))">Update User</button>
         <button onclick="">Create User</button>
-
     </form>
 </main>
 <script>
