@@ -110,6 +110,8 @@ public class SaveInDatabase implements IUserDAO {
             statement.setString(2, userDTO.getPassword());
             statement.setString(3, userDTO.getIni());
             statement.setString(4, userDTO.getCpr());
+            System.out.print("Roles: ");
+            System.out.println(userDTO.getRoles());
             statement.setString(5, String.join(" ", userDTO.getRoles()));
 
             // Read reply

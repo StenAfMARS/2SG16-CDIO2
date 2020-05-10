@@ -1,7 +1,9 @@
 package Data;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -109,12 +111,12 @@ public class UserDTO implements Serializable {
         return false;
     }
 
-    public List<String> getRoles() {
-        return roles;
+    public String[] getRoles() {
+        return (String[])roles.toArray();
     }
 
-    public boolean setRoles(List<String> roles) {
-        this.roles = roles;
+    public boolean setRoles(String[] roles) {
+        this.roles = Arrays.asList(roles);
         return true;
     }
 }
