@@ -3,8 +3,8 @@ package dto;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 public class UserPassDTO {
-    private String username;
-    private String password;
+    String username;
+    String password;
 
     public UserPassDTO(){}
 
