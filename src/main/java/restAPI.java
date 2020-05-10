@@ -1,16 +1,8 @@
-import dto.UserPassDTO;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.core.Application;
-import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -18,7 +10,7 @@ import java.io.PrintWriter;
         name = "rest API",
         urlPatterns = "/rest/*",
         loadOnStartup = 1)
-public class Appconfig extends HttpServlet {
+public class restAPI extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -33,11 +25,11 @@ public class Appconfig extends HttpServlet {
 
         switch (uri){
             case "/login":
-                writer.println(
-                    LoginManager.auth(
+                /*writer.println(
+                    UserManager.auth(
                         req.getParameter("username"),
-                        req.getParameter("password"))
-                );
+                            req.getParameter("password"))
+                );*/
                 break;
             default:
                 writer.println("404 API not found");
