@@ -1,44 +1,31 @@
 $(document).ready(function () {
-    loadUser();
+    loadUsers();
 });
-function deleteUser(id) {
-    if (!id && id != 0) {
-        id = $('#deleteid').val();
-    }
-    event.preventDefault();
-    $.ajax({
-        url: 'rest/user/' + id,
-        method: 'DELETE',
-        success: function (data) {
-            alert(JSON.stringify(data));
-            loadUsers();
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            alert(jqXHR.responseText);
-            loadUsers();
 
-        }
-    });
+function deleteUser(id) {
+    $.post('rest/user/deleteUser', {"userID":id}, data => alert(JSON.stringify(data)));
 }
 
 function loadUsers() {
-    $.get('rest/users', function (data, textStatus, req) {
-        $("#userTable").empty();
-        $.each(data, function (i, elt) {
-            $('#userTable').append(generateUserTable(elt));
-        });
-    });
+    $.post('rest/user/getUserList',
+        {},
+        function (data, textStatus, req) {
+            $("#userTable").empty();
+            $.each(data, function (i, elt) {
+                $('#userTable').append(generateUserTable(elt));
+            });
+        }
+    );
 }
 
-
 function generateUserTable(user) {
-    return '<tr><td>' + User.id + '</td>' +
-        '<td>' + UserName.name + '</td>' +
-        '<td>' + Initialer.initial + '</td>' +
-        '<td>' + CPR.name + '</td>' +
-        '<td>' + Password.password + '</td>' +
-        '<td>' + Roles.role + '</td>' +
-        '<td onclick="updateUser(' + User.id + ')">' + update.update + '</td>' +
+    return '<tr><td>' + user.userID + '</td>' +
+        '<td>' + user.userName + '</td>' +
+        '<td>' + user.ini + '</td>' +
+        '<td>' + user.cpr + '</td>' +
+        '<td>' + user.password + '</td>' +
+        '<td>' + user.roles + '</td>' +
+        '<td onclick="updateUser(' + user.userID + ')">opdater bruger</td>' +
 
-        '<td onclick="deleteUser(' + User.id + ')"><button>slet bruger</button></td></tr> '
+        '<td onclick="deleteUser(' + user.userID + ')"><button>slet bruger</button></td></tr> '
 }
