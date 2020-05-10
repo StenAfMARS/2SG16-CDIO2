@@ -1,8 +1,8 @@
 package dto;
 
 public class UserPassDTO {
-    private String username;
-    private String password;
+    String username;
+    String password;
 
     public void setPassword(String password) {
         this.password = password;

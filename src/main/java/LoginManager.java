@@ -5,19 +5,19 @@ public class LoginManager {
     public static String dbusername = "vampire_live_dk";
     public static String dbpassword = "b2h4k9gc";
 
-    public static String auth(String username, String password){
-        String logOn =  "";
+    public static String auth(String username, String password) {
+        String logOn = "";
         System.out.println("Connecting database...");
         try (Connection connection = DriverManager.getConnection(dburl, dbusername, dbpassword)) {
             System.out.println("Connected database...");
-            Statement stmt=connection.createStatement();
+            Statement stmt = connection.createStatement();
             System.out.println("execute command");
-            ResultSet rs= stmt.executeQuery("SELECT userID FROM Users WHERE userName = "+username+" AND userPassword = "+password+"");
+            ResultSet rs = stmt.executeQuery("SELECT userID FROM Users WHERE userName = " + username + " AND userPassword = " + password + "");
             System.out.println("executed command");
 
-            while(rs.next()) {
-               logOn =  "UserID: " + rs.getInt(1)+" has log on";
-        }
+            while (rs.next()) {
+                logOn = "UserID: " + rs.getInt(1) + " has log on";
+            }
 
             connection.close();
         } catch (SQLException e) {
