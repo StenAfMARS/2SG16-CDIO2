@@ -1,6 +1,4 @@
-function createUser() {
-    event.preventDefault();
-    var data = $('#userForm').serializeJSON();
+function createUser(data) {
     $.ajax({
         url: 'rest/User',
         method: 'POST',
