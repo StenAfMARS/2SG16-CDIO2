@@ -30,12 +30,12 @@ public class UserDTO implements Serializable {
     }
 
     public UserDTO(){
-        int userID = -1;
-        String userName = "";
-        String password = "";
-        String ini = "";
-        String cpr = "";
-        List<String> roles = new ArrayList<>();
+        userID = -1;
+        userName = "";
+        password = "";
+        ini = "";
+        cpr = "";
+        roles = new String[0];
     }
 
     public void randomizePassword(){

@@ -13,6 +13,7 @@ public class UserManager{
     public static IUserDAO Users(){
         if (users == null)
             users = new SaveInDatabase();
+
         return users;
     }
 

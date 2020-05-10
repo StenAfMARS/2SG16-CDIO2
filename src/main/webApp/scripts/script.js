@@ -9,7 +9,7 @@ function logOn() {
     }
 }
 function switchPage(page){
-    $("body").load(page);
+    return $("body").load(page);
 }
 
 
