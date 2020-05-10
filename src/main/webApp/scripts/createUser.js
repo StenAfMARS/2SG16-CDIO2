@@ -1,19 +1,15 @@
 function createUser(data) {
-    $.ajax({
-        url: 'rest/User',
-        method: 'POST',
-
-        contentType: "application/json", // det vi sender er json
-        data: data,
-        success: function (data) {
-            alert(JSON.stringify(data));
-
+    var settings = {
+        "url": "http://localhost:8080/2SG16_CDIO2_war_exploded/rest/user/createUser",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+            "Content-Type": "application/json"
         },
-        error: function (jqXHR, textStatus, errorThrown) {
-            alert(jqXHR.responseText);
-            alert(textStatus);
-            alert(errorThrown);
+        "data": JSON.stringify(data),
+    };
 
-        }
+    $.ajax(settings).done(function (response) {
+        console.log(response);
     });
 }
