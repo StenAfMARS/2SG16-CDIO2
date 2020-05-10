@@ -54,15 +54,17 @@ public class MainServlet extends HttpServlet {
                     resp.setContentType("application/json");
                     resp.setCharacterEncoding("UTF-8");
 
-                    gson.toJson(userList.getUser(userID));
+                    writer.print(gson.toJson(userList.getUser(userID)));
                 }catch (Exception e){
                     writer.println("500 internal server error");
                 }
                 break;
             case "/getUsers":
                 try {
-                    gson.toJson(userList.getUserList());
+                    writer.print(gson.toJson(userList.getUserList()));
                 }catch (Exception e){
+                    System.out.println(e.getMessage());
+                    e.printStackTrace();
                     writer.println("500 internal server error");
                 }
                 break;

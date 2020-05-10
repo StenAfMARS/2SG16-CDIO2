@@ -46,11 +46,21 @@ public class SaveInDatabase implements IUserDAO {
     // S + something = select somthing
     @Override
     public List<UserDTO> getUserList(){
+        Connection con = null;
         List<UserDTO> userDTOs = new ArrayList<>();
+        try {
+            //registering the jdbc driver here, your string to use
+            //here depends on what driver you are using.
+            DriverManager.registerDriver(new com.mysql.jdbc.Driver ());
 
-        try (Connection connection = DriverManager.getConnection(dburl, dbusername, dbpassword)) {
-            Statement stmt=connection.createStatement();
+            System.out.println("Connecting database...");
+            con = DriverManager.getConnection(dburl, dbusername, dbpassword);
+            //try (Connection connection = DriverManager.getConnection(dburl, dbusername, dbpassword)) {
+            System.out.println("Connected database...");
+            Statement stmt=con.createStatement();
+            System.out.println("execute command");
             ResultSet rs=stmt.executeQuery("SELECT * FROM Users");
+            System.out.println("executed command");
             while(rs.next()) {
                 UserDTO userDTO = new UserDTO();
                 userDTO.setUserID(rs.getInt(1));
@@ -60,14 +70,23 @@ public class SaveInDatabase implements IUserDAO {
                 userDTO.setCpr(rs.getString(5));
                 userDTO.setRoles(Arrays.asList(rs.getString(6).split(" ")));
                 userDTOs.add(userDTO);
+                System.out.println(rs.getString(2));
             }
 
-            connection.close();
+            con.close();
         } catch (SQLException e) {
-            throw new IllegalStateException("Cannot connect the database!", e);
+            throw new RuntimeException(e);
         }
 
+
+
+        //} catch (SQLException e) {
+        //    throw new IllegalStateException("Cannot connect the database!", e);
+        //}
+
         return userDTOs;
+
+
     }
 
     // S + something = select somthing
