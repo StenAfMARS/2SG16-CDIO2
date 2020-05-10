@@ -1,4 +1,4 @@
-function getInputValue() {
-     var inputVal = document.getElementById("username").value;
-            alert(inputVal);
-        };
+function validateLogin() {
+     var userName = document.logOnForm.password.value;
+
+};
