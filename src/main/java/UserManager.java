@@ -1,10 +1,19 @@
-import dto.UserPassDTO;
+import Data.UserDTO;
+import Data.UserPassDTO;
+import Function.IUserDAO;
+import Function.SaveInDatabase;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 @Path("user")
-public class UserManager {
+public class UserManager{
+    private static IUserDAO users;
+    public static IUserDAO Users(){
+        if (users == null)
+            users = new SaveInDatabase();
+        return users;
+    }
 
     @Path("test")
     @POST
@@ -16,11 +25,13 @@ public class UserManager {
         return output;
     }
 
-    @Path("login")
+    @Path("getUser")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public static String auth(UserPassDTO userPassDTO){
-        System.out.println(userPassDTO.getUsername());
-        return "hello " + userPassDTO.getUsername();
+    @Produces(MediaType.APPLICATION_JSON)
+    public static UserDTO auth(UserDTO user){
+        System.out.println(user.getUserID());
+
+        return users.getUser(user.getUserID());
     }
 }

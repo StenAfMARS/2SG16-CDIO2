@@ -4,250 +4,203 @@ import Data.UserDTO;
 import Exceptions.DALException;
 import Function.IUserDAO;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import java.awt.*;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.StringJoiner;
 
 public class SaveInDatabase implements IUserDAO {
-    public static String dburl = "jdbc:mysql://mysql59.unoeuro.com:3306/vampire_live_dk_db_g16cdio1?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    public static String dbusername = "vampire_live_dk";
-    public static String dbpassword = "b2h4k9gc";
 
     @Override
     public UserDTO getUser(int userID){
 
-        UserDTO userDTO = new UserDTO();
-        System.out.println("Connecting database...");
-        try (Connection connection = DriverManager.getConnection(dburl, dbusername, dbpassword)) {
-            System.out.println("Connected database...");
-            Statement stmt=connection.createStatement();
-            System.out.println("execute command");
-            ResultSet rs= stmt.executeQuery("SELECT userID,userName,userPassword,ini,cpr,Rolls FROM Users WHERE userID = "+userID+"");
-            System.out.println("executed command");
-            while(rs.next()) {
-                userDTO.setUserID(rs.getInt(1));
-                userDTO.setUserName(rs.getString(2));
-                userDTO.setPassword(rs.getString(3));
-                userDTO.setIni(rs.getString(4));
-                userDTO.setCpr(rs.getString(5));
-                userDTO.setRoles(Arrays.asList(rs.getString(6).split(" ")));
+        UserDTO userDTO = null;
+
+        try {
+            // CONNECT
+            Connection connection = Database.connect();
+
+            // Set statement
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT userID,userName,userPassword,ini,cpr,Rolls FROM Users WHERE userID = ?");
+
+            // Set variables
+            statement.setInt(1, userID);
+
+            // Read reply
+            ResultSet resultSet = statement.executeQuery();
+
+            while(resultSet.next()) {
+                userDTO = new UserDTO(
+                        resultSet.getInt(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getString(5),
+                        Arrays.asList(resultSet.getString(6).split(" "))
+                );
             }
 
+            // close things
             connection.close();
+            resultSet.close();
+            statement.close();
+
         } catch (SQLException e) {
-            throw new IllegalStateException("Cannot connect the database!", e);
+            e.printStackTrace();
+            throw new DALException("Couldn't find user");
         }
 
+        // return result
         return userDTO;
     }
 
-    // S + something = select somthing
     @Override
     public List<UserDTO> getUserList(){
-        Connection con = null;
-        List<UserDTO> userDTOs = new ArrayList<>();
-        try {
-            //registering the jdbc driver here, your string to use
-            //here depends on what driver you are using.
-            DriverManager.registerDriver(new com.mysql.jdbc.Driver ());
 
-            System.out.println("Connecting database...");
-            con = DriverManager.getConnection(dburl, dbusername, dbpassword);
-            //try (Connection connection = DriverManager.getConnection(dburl, dbusername, dbpassword)) {
-            System.out.println("Connected database...");
-            Statement stmt=con.createStatement();
-            System.out.println("execute command");
-            ResultSet rs=stmt.executeQuery("SELECT * FROM Users");
-            System.out.println("executed command");
-            while(rs.next()) {
-                UserDTO userDTO = new UserDTO();
-                userDTO.setUserID(rs.getInt(1));
-                userDTO.setUserName(rs.getString(2));
-                userDTO.setPassword(rs.getString(3));
-                userDTO.setIni(rs.getString(4));
-                userDTO.setCpr(rs.getString(5));
-                userDTO.setRoles(Arrays.asList(rs.getString(6).split(" ")));
-                userDTOs.add(userDTO);
-                System.out.println(rs.getString(2));
+        List<UserDTO> users = new LinkedList<>();
+
+        try {
+            // CONNECT
+            Connection connection = Database.connect();
+
+            // Set statement
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT userID,userName,userPassword,ini,cpr,Rolls FROM Users");
+
+            // Set variables
+
+            // Read reply
+            ResultSet resultSet = statement.executeQuery();
+
+            while(resultSet.next()) {
+                users.add(new UserDTO(
+                        resultSet.getInt(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getString(5),
+                        Arrays.asList(resultSet.getString(6).split(" "))
+                ));
             }
 
-            con.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-
-
-        //} catch (SQLException e) {
-        //    throw new IllegalStateException("Cannot connect the database!", e);
-        //}
-
-        return userDTOs;
-
-
-    }
-
-    // S + something = select somthing
-    public static void SprintRollList(){
-        System.out.println("Connecting database...");
-
-        try (Connection connection = DriverManager.getConnection(dburl, dbusername, dbpassword)) {
-            Statement stmt=connection.createStatement();
-            ResultSet rs=stmt.executeQuery("SELECT * FROM vampire_live_dk_db_g16cdio1.Rolls");
-            while(rs.next())
-                System.out.println(rs.getInt(1)+"  "+rs.getString(2)+"  ");
+            // close things
             connection.close();
+            resultSet.close();
+            statement.close();
+
         } catch (SQLException e) {
-            throw new IllegalStateException("Cannot connect the database!", e);
+            e.printStackTrace();
         }
 
+        // return result
+        return users;
     }
 
-    // C + something = Create something
     @Override
     public void createUser(UserDTO userDTO){
-        System.out.println("Connecting database...");
+        try {
+            // CONNECT
+            Connection connection = Database.connect();
 
-        try (Connection connection = DriverManager.getConnection(dburl, dbusername, dbpassword)) {
-            // create the mysql delete statement.
-            // i'm deleting the row where the id is "3", which corresponds to my
-            // "Barney Rubble" record.
-            System.out.println("connection estapleshed");
-            String query = " insert into Users (userName, userPassword, ini, cpr, Rolls)"
-                    + " values (?, ?, ?, ?, ?)";
+            // Set statement
+            PreparedStatement statement = connection.prepareStatement(
+                    "insert into Users (userName, userPassword, ini, cpr, Rolls) values (?, ?, ?, ?, ?)");
 
-            PreparedStatement preparedStmt = connection.prepareStatement(query);
-            preparedStmt.setString(1, userDTO.getUserName());
-            preparedStmt.setString(2, userDTO.getPassword());
-            preparedStmt.setString(3, userDTO.getIni());
-            preparedStmt.setString(4, userDTO.getCpr());
+            // Set variables
+            statement.setString(1, userDTO.getUserName());
+            statement.setString(2, userDTO.getPassword());
+            statement.setString(3, userDTO.getIni());
+            statement.setString(4, userDTO.getCpr());
+            statement.setString(5, String.join(" ", userDTO.getRoles()));
 
-            StringJoiner joiner = new StringJoiner(" ","","");
-            userDTO.getRoles().forEach(joiner::add);
+            // Read reply
+            ResultSet resultSet = statement.executeQuery();
 
-            preparedStmt.setString(5, joiner.toString());
+            while(resultSet.next()) {
+                userDTO = new UserDTO(
+                        resultSet.getInt(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getString(5),
+                        Arrays.asList(resultSet.getString(6).split(" "))
+                );
+            }
 
-            // execute the preparedstatement
-            preparedStmt.execute();
-
+            // close things
             connection.close();
-            System.out.println("Bruger oprettet connection closed");
+            resultSet.close();
+            statement.close();
+
         } catch (SQLException e) {
-            throw new IllegalStateException("Cannot connect the database!", e);
+            e.printStackTrace();
+            throw new DALException("Couldn't find user");
         }
     }
-    public static void Croll(String rollName, int accessLVL ){
-
-
-        System.out.println("Connecting database...");
-
-        try (Connection connection = DriverManager.getConnection(dburl, dbusername, dbpassword)) {
-            // create the mysql delete statement.
-            // i'm deleting the row where the id is "3", which corresponds to my
-            // "Barney Rubble" record.
-            String query = " insert into vampire_live_dk_db_g16cdio1.Rolls (rollName, accessLVL)"
-                    + " values (?, ?)";
-
-            PreparedStatement preparedStmt = connection.prepareStatement(query);
-            preparedStmt.setString(1, rollName);
-            preparedStmt.setInt(2, accessLVL);
-
-            // execute the preparedstatement
-            preparedStmt.execute();
-
-            connection.close();
-        } catch (SQLException e) {
-            throw new IllegalStateException("Cannot connect the database!", e);
-        }
-    }
-    // U + something = Update something
 
     @Override
     public void updateUser(UserDTO userDTO){
-        System.out.println("Connecting database...");
+        try {
+            // CONNECT
+            Connection connection = Database.connect();
 
-        try (Connection connection = DriverManager.getConnection(dburl, dbusername, dbpassword)) {
-            // create the mysql delete statement.
-            // i'm deleting the row where the id is "3", which corresponds to my
-            // "Barney Rubble" record.
-            String query = "update vampire_live_dk_db_g16cdio1.Users set userName = ?, userPassword = ?,ini = ?, cpr = ?, Rolls = ? where userId = ?";
+            // Set statement
+            PreparedStatement statement = connection.prepareStatement(
+                    "update Users set userName = ?, userPassword = ?,ini = ?, cpr = ?, Rolls = ? where userId = ?");
 
-            PreparedStatement preparedStmt = connection.prepareStatement(query);
-            preparedStmt.setString(1, userDTO.getUserName());
-            preparedStmt.setString(2, userDTO.getPassword());
-            preparedStmt.setString(3, userDTO.getIni());
-            preparedStmt.setString(4, userDTO.getCpr());
+            // Set variables
+            statement.setString(1, userDTO.getUserName());
+            statement.setString(2, userDTO.getPassword());
+            statement.setString(3, userDTO.getIni());
+            statement.setString(4, userDTO.getCpr());
+            statement.setString(5, String.join(" ", userDTO.getRoles()));
+            statement.setInt(6, userDTO.getUserID());
 
-            StringJoiner joiner = new StringJoiner(" ","","");
-            userDTO.getRoles().forEach(joiner::add);
+            // Execute
+            statement.execute();
 
-            preparedStmt.setString(5, joiner.toString());
-
-            preparedStmt.setInt(6, userDTO.getUserID());
-
-            // execute the preparedstatement
-            preparedStmt.execute();
-
+            // close things
             connection.close();
+            statement.close();
+
         } catch (SQLException e) {
-            throw new IllegalStateException("Cannot connect the database!", e);
+            e.printStackTrace();
+            throw new DALException("Couldn't find user");
         }
     }
 
     @Override
-    public void deleteUser(int userId) throws DALException {
-        DEverything("Users", "userID", userId);
-    }
+    public void deleteUser(int userID){
 
-    public static void Uroll(int rollID, String rollName, int accessLVL ){
+        UserDTO userDTO = null;
 
+        try {
+            // CONNECT
+            Connection connection = Database.connect();
 
-        System.out.println("Connecting database...");
+            // Set statement
+            PreparedStatement statement = connection.prepareStatement(
+                    "delete from Users where userID = ?");
 
-        try (Connection connection = DriverManager.getConnection(dburl, dbusername, dbpassword)) {
-            // create the mysql delete statement.
-            // i'm deleting the row where the id is "3", which corresponds to my
-            // "Barney Rubble" record.
-            String query = "update vampire_live_dk_db_g16cdio1.Rolls set rollName = ?, accessLVL = ? where rollID = ?";
+            // Set variables
+            statement.setInt(1, userID);
 
-            PreparedStatement preparedStmt = connection.prepareStatement(query);
-            preparedStmt.setString(1, rollName);
-            preparedStmt.setInt(2, accessLVL);
-            preparedStmt.setInt(3, rollID);
+            // Read reply
+            statement.execute();
 
-            // execute the preparedstatement
-            preparedStmt.execute();
-
+            // close things
             connection.close();
+            statement.close();
+
         } catch (SQLException e) {
-            throw new IllegalStateException("Cannot connect the database!", e);
-        }
-    }
-    // D + something = Delete something
-
-
-    public static void DEverything(String tableName, String tableRowName, int IDOfItem ){
-
-        System.out.println("Connecting database...");
-
-        try (Connection connection = DriverManager.getConnection(dburl, dbusername, dbpassword)) {
-            // create the mysql delete statement.
-            // i'm deleting the row where the id is "3", which corresponds to my
-            // "Barney Rubble" record.
-            System.out.println("connection estapleshed");
-            String query = "delete from vampire_live_dk_db_g16cdio1."+tableName+" where "+tableRowName+" = ?";
-
-            PreparedStatement preparedStmt = connection.prepareStatement(query);
-            preparedStmt.setInt(1, IDOfItem);
-            // execute the preparedstatement
-            System.out.println("connection running sql command");
-            preparedStmt.execute();
-            System.out.println("connection sql command executed");
-            connection.close();
-        } catch (SQLException e) {
-            throw new IllegalStateException("Cannot connect the database!", e);
+            e.printStackTrace();
+            throw new DALException("Couldn't find user");
         }
     }
 }
