@@ -23,6 +23,9 @@
     </form>
 </main>
 <script>
+    $("#userForm").submit(function(e) {
+        e.preventDefault();
+    });
     if (document.uuuuserID)
         document.getElementsByName("userID")[0].value = document.uuuuserID;
     delete document.uuuuserID
