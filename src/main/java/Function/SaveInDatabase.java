@@ -35,7 +35,7 @@ public class SaveInDatabase implements IUserDAO {
                         resultSet.getString(3),
                         resultSet.getString(4),
                         resultSet.getString(5),
-                        Arrays.asList(resultSet.getString(6).split(" "))
+                        resultSet.getString(6).split(" ")
                 );
             }
 
@@ -78,7 +78,7 @@ public class SaveInDatabase implements IUserDAO {
                         resultSet.getString(3),
                         resultSet.getString(4),
                         resultSet.getString(5),
-                        Arrays.asList(resultSet.getString(6).split(" "))
+                        resultSet.getString(6).split(" ")
                 ));
             }
 
@@ -110,27 +110,16 @@ public class SaveInDatabase implements IUserDAO {
             statement.setString(2, userDTO.getPassword());
             statement.setString(3, userDTO.getIni());
             statement.setString(4, userDTO.getCpr());
-            System.out.print("Roles: ");
-            System.out.println(userDTO.getRoles());
-            statement.setString(5, String.join(" ", userDTO.getRoles()));
+            if (userDTO.getRoles() == null)
+                statement.setString(5, "");
+            else
+                statement.setString(5, String.join(" ", userDTO.getRoles()));
 
-            // Read reply
-            ResultSet resultSet = statement.executeQuery();
-
-            while(resultSet.next()) {
-                userDTO = new UserDTO(
-                        resultSet.getInt(1),
-                        resultSet.getString(2),
-                        resultSet.getString(3),
-                        resultSet.getString(4),
-                        resultSet.getString(5),
-                        Arrays.asList(resultSet.getString(6).split(" "))
-                );
-            }
+            // Excecute
+            statement.execute();
 
             // close things
             connection.close();
-            resultSet.close();
             statement.close();
 
         } catch (SQLException e) {

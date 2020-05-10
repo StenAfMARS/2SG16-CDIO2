@@ -18,9 +18,9 @@ public class UserDTO implements Serializable {
     private String password;
     private String ini;
     private String cpr;
-    private List<String> roles;
+    private String[] roles;
 
-    public UserDTO(int userID, String userName, String password, String ini, String cpr, List<String> roles) {
+    public UserDTO(int userID, String userName, String password, String ini, String cpr, String[] roles) {
         this.userID = userID;
         this.userName = userName;
         this.password = password;
@@ -112,11 +112,11 @@ public class UserDTO implements Serializable {
     }
 
     public String[] getRoles() {
-        return (String[])roles.toArray();
+        return roles;
     }
 
     public boolean setRoles(String[] roles) {
-        this.roles = Arrays.asList(roles);
+        this.roles = roles;
         return true;
     }
 }
