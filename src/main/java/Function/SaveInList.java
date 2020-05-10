@@ -27,7 +27,7 @@ public class SaveInList implements IUserDAO {
     }
 
     @java.lang.Override
-    public void createUser(UserDTO user) throws DALException, IOException {
+    public void createUser(UserDTO user) throws DALException {
         user.setUserID(i++);
         brugere.add(user);
     }
