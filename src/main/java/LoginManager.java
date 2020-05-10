@@ -24,6 +24,5 @@ public class LoginManager {
             throw new IllegalStateException("Cannot connect the database!", e);
         }
         return logOn;
-
     }
 }
