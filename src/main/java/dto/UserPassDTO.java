@@ -6,6 +6,8 @@ public class UserPassDTO {
     private String username;
     private String password;
 
+    public UserPassDTO(){}
+
     public String getUsername() {
         return username;
     }

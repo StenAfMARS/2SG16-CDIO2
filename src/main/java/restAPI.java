@@ -8,7 +8,7 @@ import java.io.PrintWriter;
 
 @WebServlet(
         name = "rest API",
-        urlPatterns = "/rest/*",
+        urlPatterns = "/old/*",
         loadOnStartup = 1)
 public class restAPI extends HttpServlet {
 

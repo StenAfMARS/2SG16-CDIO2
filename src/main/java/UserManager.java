@@ -20,6 +20,7 @@ public class UserManager {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public static String auth(UserPassDTO userPassDTO){
+        System.out.println(userPassDTO.getUsername());
         return "hello " + userPassDTO.getUsername();
     }
 }

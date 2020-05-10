@@ -22,7 +22,7 @@ function deleteUser(id) {
 }
 
 function loadUsers() {
-    $.get('rest/Users', function (data, textStatus, req) {
+    $.get('rest/users', function (data, textStatus, req) {
         $("#userTable").empty();
         $.each(data, function (i, elt) {
             $('#userTable').append(generateUserTable(elt));
