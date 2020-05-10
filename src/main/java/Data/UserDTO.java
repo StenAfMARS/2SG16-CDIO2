@@ -11,16 +11,35 @@ public class UserDTO implements Serializable {
     private static final String iniMatch = "^[A-Za-z]{2,4}$";
     private static final String cprMatch = "^[0-9]{6}-[0-9]{4}$";
 
-    private int userID = -1;
-    private String userName = "";
-    private String password = "";
-    private String ini = "";
-    private String cpr = "";
-    private List<String> roles = new ArrayList<>();
+    private int userID;
+    private String userName;
+    private String password;
+    private String ini;
+    private String cpr;
+    private List<String> roles;
+
+    public UserDTO(int userID, String userName, String password, String ini, String cpr, List<String> roles) {
+        this.userID = userID;
+        this.userName = userName;
+        this.password = password;
+        this.ini = ini;
+        this.cpr = cpr;
+        this.roles = roles;
+    }
+
+    public UserDTO(){
+        int userID = -1;
+        String userName = "";
+        String password = "";
+        String ini = "";
+        String cpr = "";
+        List<String> roles = new ArrayList<>();
+    }
 
     public void randomizePassword(){
         while (!setPassword(generatePassword(8))) {}
     }
+
     private String generatePassword(int passwordLength){
         Random random = new Random();
 
