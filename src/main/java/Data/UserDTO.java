@@ -116,7 +116,7 @@ public class UserDTO implements Serializable {
         return roles;
     }
 
-    public boolean setRoles(String[] roles) {
+    public boolean setRoles(String[] roles) throws Exception {
         if (roles.length == 1 && roles[0].equals("")) {
             this.roles = new String[0];
             return true;
@@ -131,8 +131,7 @@ public class UserDTO implements Serializable {
                 }
             }
             if (!match){
-                this.roles = null;
-                return false;
+                throw new Exception("The only roles allowed are: " + allowedRoles.toString());
             }
         }
 
