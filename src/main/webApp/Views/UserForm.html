@@ -1,0 +1,38 @@
+<header>
+    <img src="images/logo-dummy.png"/>
+    <h1>This i a webpage</h1>
+</header>
+<main>
+    <form id="userForm" name="userForm">
+        <h2>Login</h2>
+        <label>UserId</label>
+        <input name="userID" type="text">
+        <label>UserName</label>
+        <input name="userName" type="text">
+        <label>Initialer</label>
+        <input name="ini" type="text">
+        <label>CPR</label>
+        <input name="cpr" type="text">
+        <label>Password</label>
+        <input name="password" type="text">
+        <label>Roles</label>
+        <input name="roles" type="text">
+        <button onclick="updateUser(document.userForm.userID.value, document.userForm.userName.value, document.userForm.password.value, document.userForm.ini.value, document.userForm.cpr.value, document.userForm.roles.value.split(','))">Update User</button>
+        <button onclick="createUser({
+        userID:document.userForm.userID.value,
+        userName:document.userForm.userName.value,
+        password:document.userForm.password.value,
+        ini:document.userForm.ini.value,
+        cpr:document.userForm.cpr.value,
+        roles:document.userForm.roles.value.split(',')})">Create User</button>
+    </form>
+</main>
+<script>
+    $("#userForm").submit(function(e) {
+        e.preventDefault();
+    });
+    if (document.uuuuserID)
+        document.getElementsByName("userID")[0].value = document.uuuuserID;
+    delete document.uuuuserID
+</script>
+<script src="scripts/createUser.js"></script>
