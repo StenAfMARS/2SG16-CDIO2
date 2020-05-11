@@ -12,6 +12,7 @@ public class UserDTO implements Serializable {
     private static final String passwordMatch  = "^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!-/:-?\\[-`{-~]).{8,45}$";
     private static final String iniMatch = "^[A-Za-z]{2,4}$";
     private static final String cprMatch = "^[0-9]{6}-[0-9]{4}$";
+    private static final String[] allowedRoles = {"Admin", "Pharmaceut", "Produktionsleder", "Laborant"};
 
     private int userID;
     private String userName;
@@ -35,7 +36,7 @@ public class UserDTO implements Serializable {
         password = "";
         ini = "";
         cpr = "";
-        roles = new String[0];
+        roles = null;
     }
 
     public void randomizePassword(){
@@ -116,7 +117,20 @@ public class UserDTO implements Serializable {
     }
 
     public boolean setRoles(String[] roles) {
+        for (String role : roles) {
+            boolean match = false;
+            for (String allowed : allowedRoles){
+                if (role.equals(allowed)){
+                    match = true;
+                    break;
+                }
+            }
+            if (!match)
+                return false;
+        }
+
         this.roles = roles;
+
         return true;
     }
 }
