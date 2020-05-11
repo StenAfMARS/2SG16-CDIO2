@@ -36,7 +36,7 @@ public class UserDTO implements Serializable {
         password = "";
         ini = "";
         cpr = "";
-        roles = null;
+        roles = new String[0];
     }
 
     public void randomizePassword(){
@@ -125,8 +125,10 @@ public class UserDTO implements Serializable {
                     break;
                 }
             }
-            if (!match)
+            if (!match){
+                this.roles = null;
                 return false;
+            }
         }
 
         this.roles = roles;
